@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1710687638 source:c:\users\james\desktop\cslabs_cs2\snake\main.cpp
+	<iostream>
+	<conio.h>
+	<windows.h>
+	"snake game.hpp"
+
+1710687264 c:\users\james\desktop\cslabs_cs2\snake\include\snake game.hpp
+	<iostream>
+	<stdlib.h>
+
+1710687638 source:c:\users\james\desktop\cslabs_cs2\snake\src\snake game.cpp
+	"snake game.hpp"
+
