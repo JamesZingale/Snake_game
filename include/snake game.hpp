@@ -14,6 +14,8 @@ struct snakenode
 class snakegame
 {
     public:
+        int score = 0;
+        bool gameover = 0;
         bool doPopTail = 1;
         snakegame();
         ~snakegame();
@@ -22,9 +24,11 @@ class snakegame
         void displayframe();
         void addapple();
         void removeapple();
+        void debug_displayheadtailpos();
 
 
     private:
+
         int currentHeadDir;
         int snakeLenght;
         const static int row = 15;

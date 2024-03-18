@@ -6,7 +6,9 @@
 using namespace std;
 // to do
 //
-//fix when you hit wall then go up or down and it shaves of a piece
+//have it stop the game when: head runs into edge or head runs into body (done i think)
+//
+//fix when you hit wall then go up or down and it shaves of a piece( think its fixed)
 //
 //fix output smoothness
 //
@@ -52,8 +54,11 @@ int main()
             }
         }
 
+        if(!gameobj.gameover)
+        {
+            gameobj.push_snakehead(movedir);
+        }
 
-        gameobj.push_snakehead(movedir);
 
         if(gameobj.doPopTail)
         {
@@ -65,10 +70,19 @@ int main()
         gameobj.doPopTail = 1;
         }
 
-        gameobj.displayframe();
+
+        //maybe add if here for weather or not to display game over or this(once ive made a gg srceen)
+
+        if(!gameobj.gameover)
+        {
+            gameobj.displayframe();
+        }else{
+        std::cout <<"HAHA game over" << std::endl;
+        }
+        //gameobj.debug_displayheadtailpos();
 
         // Add some delay if needed
-         Sleep(200); // for Windows
+         Sleep(250); // for Windows
 
     }
 
