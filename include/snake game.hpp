@@ -17,6 +17,7 @@ class snakegame
         int score = 0;
         bool gameover = 0;
         bool doPopTail = 1;
+        int snakeLenght;
         snakegame();
         ~snakegame();
         void push_snakehead(int direct);
@@ -26,20 +27,14 @@ class snakegame
         void removeapple();
         void debug_displayheadtailpos();
 
-
     private:
-
         int currentHeadDir;
-        int snakeLenght;
         const static int row = 15;
         const static int col = 30;
         snakenode gamearr[row][col];
         snakenode* head;
         snakenode* tail;
         snakenode* apple;
-
-
-
 };
 
 #endif // SNAKE GAME_HPP

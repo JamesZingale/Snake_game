@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include <conio.h>
 #include <windows.h>
 #include "snake game.hpp"
@@ -6,16 +7,16 @@
 using namespace std;
 // to do
 //
-//have it stop the game when: head runs into edge or head runs into body (done i think)
 //
-//fix when you hit wall then go up or down and it shaves of a piece( think its fixed)
+//
 //
 //fix output smoothness
-//
-//add score
+
 
 int main()
 {
+    //seed random
+    srand(time(0));
     snakegame gameobj;
 
     gameobj.addapple();
@@ -49,22 +50,22 @@ int main()
                     movedir = 2; // Right
                     break;
                 default:
-                    // Handle other keys as needed
                     break;
             }
         }
-
+        //if not over continue to move
         if(!gameobj.gameover)
         {
             gameobj.push_snakehead(movedir);
         }
 
-
+        // food eaten? poptail : dont pop
         if(gameobj.doPopTail)
         {
             gameobj.pop_snaketail();
 
         }else{
+        gameobj.snakeLenght += 1;
         gameobj.removeapple();
         gameobj.addapple();
         gameobj.doPopTail = 1;
@@ -82,7 +83,7 @@ int main()
         //gameobj.debug_displayheadtailpos();
 
         // Add some delay if needed
-         Sleep(250); // for Windows
+         Sleep(250);
 
     }
 

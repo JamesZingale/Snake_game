@@ -15,7 +15,7 @@ snakegame::snakegame()
          gamearr[i][j].data = '#';
         }
     }
-    snakeLenght= 1;
+    snakeLenght = 1;
     head = &gamearr[row/2][col/2];
 
     head->x_pos = col/2;
@@ -40,7 +40,7 @@ void snakegame::push_snakehead(int direct)
             if(gamearr[head->y_pos - 1][head->x_pos ].data == 'A')
             {
                 doPopTail = 0;
-                this->score++;
+                this->score += 3 * snakeLenght;
             }
             if(gamearr[head->y_pos - 1][head->x_pos ].data == 'O')
             {
@@ -61,8 +61,7 @@ void snakegame::push_snakehead(int direct)
             // Update the head pointer
             head = new_head;
 
-            // Increment the snake length
-            snakeLenght++;
+
         }else{
         this->gameover = 1;
         }
@@ -75,7 +74,7 @@ void snakegame::push_snakehead(int direct)
             if(gamearr[head->y_pos][head->x_pos + 1].data == 'A')
             {
                 doPopTail = 0;
-                this->score++;
+                this->score += 3 * snakeLenght;
             }
             if(gamearr[head->y_pos][head->x_pos + 1].data == 'O')
             {
@@ -95,12 +94,10 @@ void snakegame::push_snakehead(int direct)
             // Update the head pointer
             head = new_head;
 
-            // Increment the snake length
-            snakeLenght++;
+
         }else{
         this->gameover = 1;
         }
-
     }
     if(direct == 3)
     {
@@ -109,7 +106,7 @@ void snakegame::push_snakehead(int direct)
             if(gamearr[head->y_pos + 1][head->x_pos].data == 'A')
             {
                 doPopTail = 0;
-                this->score++;
+                this->score += 3 * snakeLenght;
             }
             if(gamearr[head->y_pos + 1][head->x_pos].data == 'O')
             {
@@ -129,8 +126,6 @@ void snakegame::push_snakehead(int direct)
             // Update the head pointer
             head = new_head;
 
-            // Increment the snake length
-            snakeLenght++;
         }else{
         this->gameover = 1;
         }
@@ -143,7 +138,7 @@ void snakegame::push_snakehead(int direct)
             if(gamearr[head->y_pos][head->x_pos - 1].data == 'A')
             {
                 doPopTail = 0;
-                this->score++;
+                this->score += 3 * snakeLenght;
             }
             if(gamearr[head->y_pos][head->x_pos - 1].data == 'O')
             {
@@ -162,9 +157,6 @@ void snakegame::push_snakehead(int direct)
 
             // Update the head pointer
             head = new_head;
-
-            // Increment the snake length
-            snakeLenght++;
         }else{
         this->gameover = 1;
         }
