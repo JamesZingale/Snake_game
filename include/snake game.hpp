@@ -3,6 +3,13 @@
 #include <iostream>
 #include<stdlib.h>
 
+const char SNAKECHAR = 'O';
+const char BACKCHAR = '#';
+const char FOODCHAR = 'A';
+const int ROWNUM = 20;
+const int COLNUM = 30;
+
+
 struct snakenode
 {
     snakenode* next = nullptr;
@@ -14,23 +21,29 @@ struct snakenode
 class snakegame
 {
     public:
-        int score = 0;
-        bool gameover = 0;
-        bool doPopTail = 1;
-        int snakeLenght;
         snakegame();
         ~snakegame();
-        void push_snakehead(int direct);
+        void push_snakehead();
         void pop_snaketail();
         void displayframe();
+        void displayGameOver();
         void addapple();
         void removeapple();
         void debug_displayheadtailpos();
+        int getCurrentHeadDir();
+        void setCurrentHeadDir(int);
+        bool getGameOver();
+        bool getDoPopTail();
+        void setDoPopTail(bool);
 
     private:
+        bool gameover = 0;
+        bool doPopTail = 1;
+        int snakeLenght;
+        int score = 0;
         int currentHeadDir;
-        const static int row = 15;
-        const static int col = 30;
+        const static int row = ROWNUM;
+        const static int col = COLNUM;
         snakenode gamearr[row][col];
         snakenode* head;
         snakenode* tail;

@@ -5,87 +5,75 @@
 #include "snake game.hpp"
 
 using namespace std;
-// to do
-//
-//
-//
-//
-//fix output smoothness
-
 
 int main()
 {
-    //seed random
-    srand(time(0));
-    snakegame gameobj;
+    srand(time(0)); //seed random
 
-    gameobj.addapple();
-    int movedir = 2;
+    snakegame gameobj; //create game object
 
-    // Infinite loop for continuously checking input
-    while (true)
+    gameobj.addapple(); //add first apple
+
+    while (!gameobj.getGameOver()) //while not over, do game
     {
-        // Check if a key is pressed
-        if (_kbhit())
-        {
-            // If a key is pressed, get the key without waiting
-            char key = _getch();
-            // Convert the key to the desired direction
-            switch (key)
+            if (_kbhit()) // if key hit update direction
             {
-                case 'w':
-                    if(movedir != 3)
-                    movedir = 1; // Up
-                    break;
-                case 's':
-                    if(movedir != 1)
-                    movedir = 3; // Down
-                    break;
-                case 'a':
-                    if(movedir != 2)
-                    movedir = 4; // Left
-                    break;
-                case 'd':
-                    if(movedir != 4)
-                    movedir = 2; // Right
-                    break;
-                default:
-                    break;
+                char key = _getch();
+                switch (key)
+                {
+                    case 'w':
+                        if(gameobj.getCurrentHeadDir() != 3)
+                         gameobj.setCurrentHeadDir(1); // Up
+                        break;
+                    case 's':
+                        if(gameobj.getCurrentHeadDir() != 1)
+                        gameobj.setCurrentHeadDir(3); // Down
+                        break;
+                    case 'a':
+                        if(gameobj.getCurrentHeadDir() != 2)
+                        gameobj.setCurrentHeadDir(4); // Left
+                        break;
+                    case 'd':
+                        if(gameobj.getCurrentHeadDir() != 4)
+                        gameobj.setCurrentHeadDir(2); // Right
+                        break;
+                    default:
+                        break;
+                }
             }
-        }
-        //if not over continue to move
-        if(!gameobj.gameover)
-        {
-            gameobj.push_snakehead(movedir);
-        }
 
-        // food eaten? poptail : dont pop
-        if(gameobj.doPopTail)
-        {
-            gameobj.pop_snaketail();
-
-        }else{
-        gameobj.snakeLenght += 1;
-        gameobj.removeapple();
-        gameobj.addapple();
-        gameobj.doPopTail = 1;
-        }
+            if(!gameobj.getGameOver()) //if not over move head forward
+            {
+                gameobj.push_snakehead();
+            }
 
 
-        //maybe add if here for weather or not to display game over or this(once ive made a gg srceen)
+            if(gameobj.getDoPopTail()) //controls whether or not to increase snake length
+            {
+                gameobj.pop_snaketail();
 
-        if(!gameobj.gameover)
+            }else{
+            gameobj.removeapple();
+            gameobj.addapple();
+            gameobj.setDoPopTail(1);
+            }
+
+        if(!gameobj.getGameOver()) //controls whether or not to display new frame or end screen
         {
             gameobj.displayframe();
         }else{
-        std::cout <<"HAHA game over" << std::endl;
+            gameobj.displayGameOver();
         }
+
+
         //gameobj.debug_displayheadtailpos();
 
-        // Add some delay if needed
+        //delay
          Sleep(250);
-
     }
+
+    std::cout<< "press Enter to exit";
+    std::cin.get();
 
     return 0;
 }

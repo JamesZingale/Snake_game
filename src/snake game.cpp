@@ -2,17 +2,18 @@
 
 void snakegame::debug_displayheadtailpos()
 {
-    std::cout << "head y, x: " << this->head->x_pos << " " << this->head->y_pos << std::endl;
-    std::cout << "tail y, x: " << this->tail->x_pos << " " << this->tail->y_pos << std::endl;
+    std::cout << "head y, x: " << this->head->y_pos << " " << this->head->x_pos << std::endl;
+    std::cout << "tail y, x: " << this->tail->y_pos << " " << this->tail->x_pos << std::endl;
 }
 
 snakegame::snakegame()
 {
+    currentHeadDir = 2;
     for(int i = 0; i < row; i++)
     {
         for(int j = 0; j < col; j++)
         {
-         gamearr[i][j].data = '#';
+         gamearr[i][j].data = BACKCHAR;
         }
     }
     snakeLenght = 1;
@@ -21,174 +22,77 @@ snakegame::snakegame()
     head->x_pos = col/2;
     head->y_pos = row/2;
 
-    gamearr[head->y_pos][head->x_pos].data = 'O';
+    gamearr[head->y_pos][head->x_pos].data = SNAKECHAR;
     tail = head;
 }
+
 snakegame::~snakegame()
 {
 
 }
-void snakegame::push_snakehead(int direct)
+void snakegame::push_snakehead()
 {
-    //maybe instead of all the if staments, have switch statment calculate new cords based on dir
-    // then have (maybe) 2 other functions one to validate and one to create the new head at the new cords
-    if(direct == 1)
+    int newxpos, newypos;
+    switch(currentHeadDir)
     {
-
-        if (head->y_pos - 1 > -1)
-        {
-            if(gamearr[head->y_pos - 1][head->x_pos ].data == 'A')
-            {
-                doPopTail = 0;
-                this->score += 3 * snakeLenght;
-            }
-            if(gamearr[head->y_pos - 1][head->x_pos ].data == 'O')
-            {
-                this->gameover = 1;
-            }
-            // Create a new head node
-            snakenode* new_head = &gamearr[head->y_pos - 1][head->x_pos];
-            new_head->data = 'O';
-
-            new_head->y_pos = head->y_pos - 1;
-            new_head->x_pos = head->x_pos;
-
-            // Update the new head's next pointer
-            head->prev = new_head;
-            new_head->next = head;
-            new_head->prev = nullptr;
-
-            // Update the head pointer
-            head = new_head;
-
-
-        }else{
-        this->gameover = 1;
-        }
-
+    case 1: // up
+        newypos = head->y_pos - 1;
+        newxpos = head->x_pos;
+        break;
+    case 2: //right
+        newypos = head->y_pos;
+        newxpos = head->x_pos + 1;
+        break;
+    case 3: //down
+        newypos = head->y_pos + 1;
+        newxpos = head->x_pos;
+        break;
+     case 4: //left
+        newypos = head->y_pos;
+        newxpos = head->x_pos - 1;
+        break;
     }
-    if(direct == 2)
+    if(newypos >= 0 && newypos < row && newxpos >= 0 && newxpos < col)
     {
-        if (head->x_pos + 1 < col )
-        {
-            if(gamearr[head->y_pos][head->x_pos + 1].data == 'A')
-            {
-                doPopTail = 0;
-                this->score += 3 * snakeLenght;
-            }
-            if(gamearr[head->y_pos][head->x_pos + 1].data == 'O')
-            {
-                this->gameover = 1;
-            }
-            // Create a new head node
-            snakenode* new_head = &gamearr[head->y_pos][head->x_pos + 1];
-            new_head->data = 'O';
-            new_head->y_pos = head->y_pos;
-            new_head->x_pos = head->x_pos + 1;
+        switch(gamearr[newypos][newxpos].data)
+       {
+       case SNAKECHAR:
+        gameover = 1;
+        break;
+       case FOODCHAR:
+        doPopTail = 0;
+        score += 3 * snakeLenght;
+        snakeLenght++;
+        break;
+       }
+        snakenode* new_head = &gamearr[newypos][newxpos];
+        new_head->data = SNAKECHAR;
 
-            // Update the new head's next pointer
-            head->prev = new_head;
-            new_head->next = head;
-            new_head->prev = nullptr;
+        new_head->y_pos = newypos;
+        new_head->x_pos = newxpos;
 
-            // Update the head pointer
-            head = new_head;
+        head->prev = new_head;
+        new_head->next = head;
+        new_head->prev = nullptr;
 
+        head = new_head;
 
-        }else{
-        this->gameover = 1;
-        }
-    }
-    if(direct == 3)
-    {
-        if (head->y_pos + 1 < row  )
-        {
-            if(gamearr[head->y_pos + 1][head->x_pos].data == 'A')
-            {
-                doPopTail = 0;
-                this->score += 3 * snakeLenght;
-            }
-            if(gamearr[head->y_pos + 1][head->x_pos].data == 'O')
-            {
-                this->gameover = 1;
-            }
-            // Create a new head node
-            snakenode* new_head = &gamearr[head->y_pos + 1][head->x_pos];
-            new_head->data = 'O';
-            new_head->y_pos = head->y_pos + 1;
-            new_head->x_pos = head->x_pos;
-
-            // Update the new head's next pointer
-            head->prev = new_head;
-            new_head->next = head;
-            new_head->prev = nullptr;
-
-            // Update the head pointer
-            head = new_head;
-
-        }else{
-        this->gameover = 1;
-        }
-
-    }
-    if(direct == 4)
-    {
-        if (head->x_pos - 1 > -1 )
-        {
-            if(gamearr[head->y_pos][head->x_pos - 1].data == 'A')
-            {
-                doPopTail = 0;
-                this->score += 3 * snakeLenght;
-            }
-            if(gamearr[head->y_pos][head->x_pos - 1].data == 'O')
-            {
-                this->gameover = 1;
-            }
-            // Create a new head node
-            snakenode* new_head = &gamearr[head->y_pos][head->x_pos - 1];
-            new_head->data = 'O';
-            new_head->y_pos = head->y_pos;
-            new_head->x_pos = head->x_pos - 1;
-
-            // Update the new head's next pointer
-            head->prev = new_head;
-            new_head->next = head;
-            new_head->prev = nullptr;
-
-            // Update the head pointer
-            head = new_head;
-        }else{
-        this->gameover = 1;
-        }
+    }else{
+    gameover = 1;
     }
 }
 void snakegame::pop_snaketail()
 {
-    if( this->gameover == 0 ) // so if not over
+    if( gameover == 0 ) // so if not over
     {
-        tail->data = '#';
+        tail->data = BACKCHAR;
         tail = tail->prev;
         tail->next = nullptr;
     }
-
 }
 void snakegame::displayframe()
 {
-    for(int t = 0; t < row; t++)
-    {
-        std::cout << "\n";
-    }
-
-    std::cout << "|";
-    for(int t = 0; t < col ; t++)
-    {
-        std::cout << "-";
-    }
-    std::cout << "|";
-    std::cout << "\n";
-
-    std::cout << "|";
-    std::cout << "  Score: " << this->score;;
+    //check width of int score
     int outputwidth = 10;
     switch(score)
     {
@@ -210,22 +114,31 @@ void snakegame::displayframe()
         case 100000 ... 999999:
         outputwidth = 15;
             break;
+        case 1000000 ... 9999999:
+        outputwidth = 16;
+            break;
+        case 10000000 ... 99999999:
+        outputwidth = 17;
+            break;
     }
-    for(int t = 0; t < col - outputwidth ; t++)
-    {
-        std::cout << ' ';
-    }
-    std::cout << "|";
-    std::cout << "\n";
-
-    std::cout << "|";
-    for(int t = 0; t < col ; t++)
-    {
+    //header and score part
+    std::cout << "\n \n \n|";
+    for(int t = 0; t < col ; t++){
         std::cout << "-";
     }
-    std::cout << "|";
-    std::cout << "\n";
+    std::cout << "|\n|  Score: " << score;
 
+    for(int t = 0; t < col - outputwidth ; t++){
+        std::cout << ' ';
+    }
+    std::cout << "|\n|";
+    for(int t = 0; t < col ; t++){
+        std::cout << "-";
+    }
+    std::cout << "|\n";
+
+
+    //output of the array
     for(int i = 0; i < row; i++)
     {
         std::cout << "|";
@@ -233,19 +146,32 @@ void snakegame::displayframe()
         {
          std::cout << gamearr[i][j].data;
         }
-        std::cout << "|";
-        std::cout << "\n";
+        std::cout << "|\n";
     }
+
+    //output of the footer
     std::cout << "|";
     for(int t = 0; t < col ; t++)
     {
         std::cout << "-";
     }
-    std::cout << "|";
-    std::cout << "\n";
+    std::cout << "|" << std::endl;
 }
-
-
+void snakegame::displayGameOver()
+{
+    std::cout << "|----------------------------------------------------------------------------------|\n"
+                 "|  GGGGGG       A       M     M   EEEEEE       OOOOO   V       V  EEEEEE   RRRRRR  |\n"
+                 "| G            A A      MM   MM   E           O     O   V     V   E        R     R |\n"
+                 "| G   GGG     AAAAA     M M M M   EEEEE       O     O    V   V    EEEEE    RRRRRR  |\n"
+                 "| G     G    A     A    M  M  M   E           O     O     V V     E        R    R  |\n"
+                 "|  GGGGG    A       A   M     M   EEEEEE       OOOOO       V      EEEEEE   R     R |\n"
+                 "|----------------------------------------------------------------------------------|\n"
+                 "| score and final length                                                           |\n"
+                 "|----------------------------------------------------------------------------------|\n"
+                 "| Score:" << score << "\n"
+                 "| Length:" << snakeLenght << "\n"
+                 "|----------------------------------------------------------------------------------|\n";
+}
 void snakegame::addapple()
 {
     int rand_rownum, rand_colnum;
@@ -254,17 +180,34 @@ void snakegame::addapple()
         rand_rownum  = rand() % row ;
         rand_colnum  = rand() % col ;
 
-    }while(gamearr[rand_rownum][rand_colnum].data != '#');
-
+    }while(gamearr[rand_rownum][rand_colnum].data != BACKCHAR);
 
     apple = &gamearr[rand_rownum][rand_colnum];
-    apple->data  = 'A';
+    apple->data  = FOODCHAR;
     apple->x_pos = rand_colnum;
     apple->y_pos = rand_rownum;
-
-
 }
 void snakegame::removeapple()
 {
     apple = nullptr;
+}
+int snakegame::getCurrentHeadDir()
+{
+    return currentHeadDir;
+}
+void snakegame::setCurrentHeadDir(int dir)
+{
+    currentHeadDir = dir;
+}
+bool snakegame::getGameOver()
+{
+  return gameover;
+}
+bool snakegame::getDoPopTail()
+{
+    return doPopTail;
+}
+void snakegame::setDoPopTail(bool val)
+{
+    doPopTail = val;
 }
